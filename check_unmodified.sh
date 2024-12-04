@@ -155,6 +155,11 @@ main() {
     exit 1
   fi
 
+  # If $target_path is outside the current path, we need to navigate to it for the duration of the script
+  if [[ "$target_path" != "." && "$target_path" != "$(pwd)" ]]; then
+    cd "$target_path" || exit 1
+  fi
+
   # Calculate the cutoff date in YYYY-MM-DD format
   cutoff_date=$(date -d "$days days ago" +%Y-%m-%d)
 
