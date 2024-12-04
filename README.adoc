@@ -1,0 +1,161 @@
+= P4W Playground
+:wtd_slack_www: https://www.writethedocs.org/slack/
+
+This is a place for members of the Write the Docs *#programming4writers* channel in the link:{wtd_slack_www}[Write the Docs Slack space] to learn about and contribute to task-based scripting and maintaining open-source tooling more broadly.
+
+The initial focus is on developing an open-source Bash script called `check_unmodified.sh`, for checking a codebase for files that have not been committed to Git since before a given date.
+
+This was a request in a different Slack channel that evolved into this experiment.
+I am committing and releasing it here so that others may use it, follow along, request enhancements/bugfixes, and so forth.
+
+I wish to intentionally use this script as an object for learning a little bit about Bash scripting and software development and deployment more generally.
+
+First, let's take a look at the script, then we'll talk about how we might use it to learn and what else we might want to include in this project.
+
+== The `check_unmodified.sh` Script
+
+For now, let's focus on the product: the script itself.
+
+=== Prerequisites
+
+This script is meant to be used in a proper *Bash* environment with *Git* installed and a Git *repository* in place.
+
+_If you are on Windows_, you may need GitBash or Windows Subsystem for Linux (WSL) to run this script.
+
+=== Setup
+
+Install by whichever method is easier:
+
+[upperalpha]
+. Download this script from the repository
++
+To do this from your shell:
++
+[.prompt]
+ curl -O https://raw.githubusercontent.com/DocOps/programming4writers/main/check_unmodified.sh
+
+
+. Copy and paste the contents of link:check_unmodified.sh[check_unmodified.sh] into a new file by that name in your repo.
+
+Either way, you will likely have to use the command `chmod +x check_unmodified.sh` to make the script executable.
+
+Then you should be <<running,ready to go>>.
+
+[TIP]
+You might wish to clone or fork the repo to maintain our own copy of the script, so you can track further developments or <<development,contribute to the project>> yourself.
+
+[[running]]
+=== Running the Script
+
+To run the script, you can use the following command:
+
+[.prompt]
+ ./check_unmodified.sh
+
+Use `--help` to see the available options:
+
+[.prompt]
+ ./check_unmodified.sh --help
+
+=== Passing Arguments
+
+There are a few ways to pass arguments to the script:
+
+[upperalpha]
+. Pass the arguments directly to the script using option flags.
++
+[.prompt]
+ ./check_unmodified.sh --days 30 path/to/docs
+
+. Set the arguments as inline environment variables.
++
+[.prompt]
+ UNMO_DAYS=30 UNMO_PATH=path/to/docs ./check_unmodified.sh
++
+These variables can be found at the top of the script itself.
+
+. Set arguments as session environment variables.
++
+[.prompt]
+ export UNMO_DAYS=30
+ export UNMO_PATH=path/to/docs
+ ./check_unmodified.sh
+
+. Set permanent environment variables in your shell or CI/CD platform configuration.
+
+== Development (and Learning)
+
+This project's development is potentially a little more involved/inviting than a typical open source codebase.
+I wish to use it as a way for absolute beginngers to learn some coding skills.
+
+If you wish to contribute or follow along, please continue reading.
+
+=== Learning Development Using this Project
+
+I have decided to maintain this repo has a learning project, mainly for technical writers who want to learn:
+
+. basic Bash scripting
+. basic AsciiDoc markup
+. how to contribute to an open-source project
+. how a software project goes from proof-of-concept to a relatively mature open-source release
+
+I think the `check_unmodified.sh` script is a decently simple and constrained, yet useful and kind of fun, project for learning these skills.
+
+==== Learning Bash Scripting
+
+If you are new to Bash scripting, hopefully you can learn a lot by reading and understanding the script itself, at least regarding my style/approach, which is a balance of pragmatism and hopefully best practices, and constantly improving.
+
+If tutorials are your thing, link:https://ryanstutorials.net/bash-scripting-tutorial[this one by Ryan Chadwick] might be a great start.
+
+All of the generative AI models that are good at coding are quite good at Bash, and they are a great way to interactively learn different strategies and styles.
+
+If you issue a pull request with changes, we can discuss style and best practices in the review process.
+
+=== Ways to Contribute
+
+While you're welcome to contribute code or docs directly, you can also contribute by:
+
+* testing the script
+* posting issues for bugs
+* posting issues for enhancements
+
+If you wish to contribute source code or docs changes, please follow the standard open-source contribution process:
+
+. Add or choose an Issue to work on
+. Fork the repo
+. Make your changes
+. Submit a pull request
+. Engage in the review process in good faith
+
+I am happy to help anyone who is not already a developer or who has never contributed to open source before, with any part of this process.
+You can find me on WtD Slack as `@BrianD` or in the Issues or PRs on this repo.
+
+=== Future Development
+
+There are lots of things we can add to this script, but I my hope is to keep it as simple as possible.
+We can always add additional scripts to this repo if folks want to participate in the learning process from scratch.
+
+A few priorities might include:
+
+* *Adding a test script* so we can automate and streamline the testing process
++
+Bash doesn't really have a test framework, but we can write a simple script that runs the main script with various arguments and checks the output.
+
+* *Adding a CI/CD pipeline* to automate the testing and deployment process
+
+* Releasing the functionality as a *GitHub Action*, so it can be used in any repo without even needing the file
+
+* Releasing the script via *package managers* such as *Homebrew* (MacOS), *APT*, or *DNF* (Linux), so users can install it directly and use it on any repo as a simple command.
+
+In terms of other ideas for scripts we could add to this project:
+
+* A Bash script for installing and managing Git plugins
+* A script for keeping track of GenAI/GPT prompts to maintain a project map
+* Something simple but useful for getting _your_ work done faster
+
+== Legal
+
+This project is released under the MIT License.
+
+However, you absolutely do _not_ need to include the Copyright notice unless you actually release a public version of this code in your own product.
+You can include the script in any code repo you wish to use it on and not worry about the licensing.
