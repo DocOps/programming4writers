@@ -96,8 +96,10 @@ main() {
   local ext="$EXT"
   local days="$DAYS"
   local show_untracked="$SHOW_UNTRACKED"
+  local skip_git_check="$SKIP_GIT_CHECK"
+  local cutoff_date
 
-  # Parse options
+  # Parse arguments
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
       --help)
@@ -120,13 +122,25 @@ main() {
         skip_git_check="true"
         shift
         ;;
+      --quiet)
+        QUIET="true"
+        shift
+        ;;
+      --verbose)
+        VERBOSE="true"
+        shift
+        ;;
+      --debug)
+        DEBUG="true"
+        shift
+        ;;
       *)
         if [[ "$1" == -* ]]; then
           echo "Error: Unknown option: $1" >&2
           exit 1
         fi      
         target_path="$1"
-        shift
+        break
         ;;
     esac
   done
