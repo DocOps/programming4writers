@@ -137,9 +137,9 @@ We can always add additional scripts to this repo if folks want to participate i
 
 A few priorities might include:
 
-* *Adding a test script* so we can automate and streamline the testing process
+* *Improving the test script* so we can automate and streamline the testing process
 +
-Bash doesn't really have a test framework, but we can write a simple script that runs the main script with various arguments and checks the output.
+Bash doesn't really have a test framework, but I wrote a simple script (`test_check_unmodified.sh`) that runs the main script with various arguments, but so far one has to manually chack the output
 
 * *Adding a CI/CD pipeline* to automate the testing and deployment process
 
