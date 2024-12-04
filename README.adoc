@@ -20,7 +20,7 @@ For now, let's focus on the product: the script itself.
 
 This script is meant to be used in a proper *Bash* environment with *Git* installed and a Git *repository* in place.
 
-_If you are on Windows_, you may need GitBash or Windows Subsystem for Linux (WSL) to run this script.
+_If you are on Windows_, you may need link:https://gitforwindows.org[GitBash] or, preferably, link:https://learn.microsoft.com/en-us/windows/wsl/install[Windows Subsystem for Linux (WSL2)] to run this script.
 
 === Setup
 

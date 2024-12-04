@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Global settings (based on environment variables)
-TARGET_PATH="${UNMODIFIED_PATH:-.}"
-EXT="${UNMODIFIED_EXT:-md}"
-DAYS="${UNMODIFIED_DAYS:-365}"
+TARGET_PATH="${UNMO_PATH:-.}"
+EXT="${UNMO_EXT:-md}"
+DAYS="${UNMO_DAYS:-365}"
 SHOW_UNTRACKED="${SHOW_UNTRACKED:-false}"
 SKIP_GIT_CHECK="${SKIP_GIT_CHECK:-false}"
-QUIET="${UNMODIFIED_QUIET:-false}"
-VERBOSE="${UNMODIFIED_VERBOSE:-false}"
-DEBUG="${UNMODIFIED_DEBUG:-false}"
+QUIET="${UNMO_QUIET:-false}"
+VERBOSE="${UNMO_VERBOSE:-false}"
+DEBUG="${UNMO_DEBUG:-false}"
 
 # also capture if --debug is passed anywhere in the args
 if [[ "$DEBUG" = "true" || "$*" == *--debug* ]]; then
