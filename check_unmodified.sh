@@ -1,3 +1,96 @@
+#!/bin/bash
+
+# Global settings (based on environment variables)
+TARGET_PATH="${UNMODIFIED_PATH:-.}"
+EXT="${UNMODIFIED_EXT:-md}"
+DAYS="${UNMODIFIED_DAYS:-365}"
+SHOW_UNTRACKED="${SHOW_UNTRACKED:-false}"
+SKIP_GIT_CHECK="${SKIP_GIT_CHECK:-false}"
+QUIET="${UNMODIFIED_QUIET:-false}"
+VERBOSE="${UNMODIFIED_VERBOSE:-false}"
+DEBUG="${UNMODIFIED_DEBUG:-false}"
+
+# also capture if --debug is passed anywhere in the args
+if [[ "$DEBUG" = "true" || "$*" == *--debug* ]]; then
+  echo "Debugging output enabled."
+  set -x
+fi
+
+# Functions
+show_help() {
+  cat <<EOF
+  
+  Usage: ./check_unmodified.sh [OPTIONS] [DIRECTORY]
+
+  Directory defaults to the current directory if not specified.
+
+  Options:
+    --help            Display this help and exit
+    --ext EXT         Specify file extension (default: md)
+    --days DAYS       Specify the timespan to check (default: 365)
+    --untracked       Show files not tracked by Git
+    --skip-git-check  Skip the Git check
+
+EOF
+}
+
+message() {
+  # $1: level (info, warn, error, debug)
+  # if $1 is not exactly one of these, treat $1 as the content for info message
+  # $2: content
+  local level="$1"
+  local string
+  if [[ "$level" == "info" || "$level" == "warn" || "$level" == "error" || "$level" == "debug" ]]; then
+    string="$2"
+    shift
+  else
+    level="info"
+    string="$1"
+  fi
+  case "$level" in
+    "info")
+      if [[ "$QUIET" = "false" ]]; then
+        echo "INFO: $string"
+      fi
+      ;;
+    "warn")
+      if [[ "$QUIET" = "false" ]]; then
+        echo "WARNING: $string" >&2
+      fi
+      ;;
+    "error")
+      echo "ERROR: $string" >&2
+      ;;
+    "debug")
+      if [[ "$DEBUG" = "true" || "$VERBOSE" = "true" ]]; then
+        echo "DEBUG: $string"
+      fi
+      ;;
+    *)
+      echo "$2"
+      ;;
+  esac
+}
+
+check_for_git() {
+  if ! command -v git &>/dev/null; then
+    echo "Error: Git is not installed." >&2
+    echo "Disable Git check with --skip-git-check"
+    exit 1
+  fi
+  # check for .git repository
+  if [[ ! -d .git ]]; then
+    echo "Error: Not a Git repository."
+    exit 1
+  fi
+}
+
+last_commit_date() {
+  local file="$1"
+  git log -1 --format="%ai" -- "$(realpath --relative-to="$(git rev-parse --show-toplevel)" "$file")" 2>/dev/null | cut -d ' ' -f 1
+}
+
+# Function to establish a local scope for main processing
 main() {
   local target_path="$TARGET_PATH"
   local ext="$EXT"
