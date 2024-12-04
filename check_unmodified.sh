@@ -3,20 +3,20 @@
 TARGET_PATH="."
 EXT="md"
 DAYS="365"
-SHOW_UNTRACKED="false"
+SHOW_UNTRACKED="true"
 
 show_help() {
   cat <<EOF
   
-  Usage: ./check_unmodified.sh [OPTIONS] [DIRECTORY]
+  Usage: check_unmodified.sh [OPTIONS] [DIRECTORY]
 
   Directory defaults to the current directory if not specified.
 
   Options:
-    --help          Display this help and exit
-    --ext EXT       Specify the file extension to search for (default: $EXT)
-    --days DAYS     Specify the number of days to check for (default: $DAYS)
-    --untracked     Hide files not tracked by Git
+    --help            Display this help and exit
+    --ext EXT         Specify the file extension to search for (default: $EXT)
+    --days DAYS       Specify the number of days to check for (default: $DAYS)
+    --hide-untracked  Hide files not tracked by Git
 
 EOF
 }
@@ -35,8 +35,8 @@ while [[ "$#" -gt 0 ]]; do
       DAYS="$2"
       shift 2
       ;;
-    --untracked)
-      SHOW_UNTRACKED="true"
+    --hide-untracked)
+      SHOW_UNTRACKED="false"
       shift
       ;;
     *)
@@ -67,9 +67,7 @@ last_commit_date() {
 
 # Find files with the specified extension and check Git history
 echo "Searching for *.$EXT files in $TARGET_PATH last committed before $CUTOFF_DATE..."
-# use only Git-tracked paths
-find "$TARGET_PATH" -type f -name "*.$EXT" -exec git ls-files {} \; | while read -r file; do
-# find "$TARGET_PATH" -type f -name "*.$EXT" | while read -r file; do
+find "$TARGET_PATH" -type f -name "*.$EXT" | while read -r file; do
   last_commit_date=$(last_commit_date "$file")
   
   # Skip files not tracked by Git
