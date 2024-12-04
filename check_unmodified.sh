@@ -151,22 +151,29 @@ main() {
 
   # Ensure the directory exists
   if [[ ! -d "$target_path" ]]; then
-    echo "Error: Directory '$target_path' does not exist."
+    message "error" "Directory '$target_path' does not exist."
     exit 1
   fi
 
   # Calculate the cutoff date in YYYY-MM-DD format
-  local cutoff_date
   cutoff_date=$(date -d "$days days ago" +%Y-%m-%d)
 
   # Determine the list of files to process
   local files
   if [[ "$show_untracked" = "true" ]]; then
-    echo "Searching for *.$ext files in $target_path, including untracked files..."
+    mssg="Searching for *.$ext files in $target_path, including untracked files,"
     files=$(find "$target_path" -type f -name "*.$ext")
   else
-    echo "Searching for *.$ext files in $target_path tracked by Git last committed before $cutoff_date..."
+    mssg="Searching for *.$ext files in $target_path tracked by Git"
     files=$(git ls-files -- "$target_path" | grep -E "\.${ext}$")
+  fi
+
+  message "debug" "$mssg last committed before $cutoff_date..."
+
+  # Check if no files are found
+  if [[ -z "$files" || $(echo "$files" | wc -l) -eq 0 ]]; then
+    message "info" "No files found."
+    exit 0
   fi
 
   # Process the files
@@ -174,11 +181,13 @@ main() {
     local last_commit_date_value
     last_commit_date_value=$(last_commit_date "$file")
 
-    # For untracked files, last_commit_date_value will be empty
     if [[ -z "$last_commit_date_value" && "$show_untracked" = "true" ]]; then
-      echo "Not tracked by Git: $file"
+      echo "Untracked: $file"
     elif [[ "$last_commit_date_value" < "$cutoff_date" ]]; then
-      echo "Last modified before $cutoff_date: $file (Last committed: $last_commit_date_value)"
+      echo "$file (Last committed: $last_commit_date_value)"
     fi
   done <<< "$files"
 }
+
+# Call the main function
+main "$@"
