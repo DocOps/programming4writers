@@ -24,7 +24,7 @@ _If you are on Windows_, you may need link:https://gitforwindows.org[GitBash] or
 
 === Setup
 
-Install by whichever method is easier:
+Install the script by whichever method is easier:
 
 [upperalpha]
 . Download this script from the repository
@@ -37,7 +37,10 @@ To do this from your shell:
 
 . Copy and paste the contents of link:check_unmodified.sh[check_unmodified.sh] into a new file by that name in your repo.
 
-Either way, you will likely have to use the command `chmod +x check_unmodified.sh` to make the script executable.
+Either way, you will have to make the file executable:
+
+[.prompt]
+ chmod +x check_unmodified.sh
 
 Then you should be <<running,ready to go>>.
 
@@ -83,6 +86,7 @@ These variables can be found at the top of the script itself.
 
 . Set permanent environment variables in your shell or CI/CD platform configuration.
 
+[[development]]
 == Development (and Learning)
 
 This project's development is potentially a little more involved/inviting than a typical open source codebase.
@@ -121,18 +125,18 @@ While you're welcome to contribute code or docs directly, you can also contribut
 
 If you wish to contribute source code or docs changes, please follow the standard open-source contribution process:
 
-. Add or choose an Issue to work on
-. Fork the repo
-. Make your changes
-. Submit a pull request
-. Engage in the review process in good faith
+. Add or choose an Issue to work on.
+. Fork the repo.
+. Make your changes.
+. Submit a pull request.
+. Engage in the review process in good faith.
 
 I am happy to help anyone who is not already a developer or who has never contributed to open source before, with any part of this process.
 You can find me on WtD Slack as `@BrianD` or in the Issues or PRs on this repo.
 
 === Future Development
 
-There are lots of things we can add to this script, but I my hope is to keep it as simple as possible.
+There are lots of things we can add to this script, but my hope is to keep it as simple as possible.
 We can always add additional scripts to this repo if folks want to participate in the learning process from scratch.
 
 A few priorities might include:
