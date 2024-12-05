@@ -35,9 +35,6 @@ EOF
 }
 
 message() {
-  # $1: level (info, warn, error, debug)
-  # if $1 is not exactly one of these, treat $1 as the content for info message
-  # $2: content
   local level="$1"
   local string
   if [[ "$level" == "info" || "$level" == "warn" || "$level" == "error" || "$level" == "debug" ]]; then
@@ -145,10 +142,6 @@ main() {
     esac
   done
 
-  if [[ ! "$skip_git_check" = "true" ]]; then
-    check_for_git
-  fi
-
   # Ensure the directory exists
   if [[ ! -d "$target_path" ]]; then
     message "error" "Directory '$target_path' does not exist."
@@ -158,6 +151,11 @@ main() {
   # If $target_path is outside the current path, we need to navigate to it for the duration of the script
   if [[ "$target_path" != "." && "$target_path" != "$(pwd)" ]]; then
     cd "$target_path" || exit 1
+    target_path="."
+  fi
+
+  if [[ ! "$skip_git_check" = "true" ]]; then
+    check_for_git
   fi
 
   # Calculate the cutoff date in YYYY-MM-DD format
