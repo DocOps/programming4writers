@@ -30,6 +30,9 @@ show_help() {
     --days DAYS       Specify the timespan to check (default: 365)
     --untracked       Show files not tracked by Git
     --skip-git-check  Skip the Git check
+    --quiet           Suppress normal output
+    --verbose         Output more information
+    --debug           Enable Bash debugging output
 
 EOF
 }
